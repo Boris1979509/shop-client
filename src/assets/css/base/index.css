@@ -1,0 +1,19 @@
+@tailwind base;
+
+@layer base {
+    #app {
+        @apply relative
+    }
+
+    body {
+        @apply flex flex-col w-screen h-screen font-body font-normal text-gray-600 overflow-x-hidden tracking-wide;
+    }
+
+    h1 {
+        @apply text-3xl font-bold;
+    }
+
+    h2 {
+        @apply text-2xl font-bold;
+    }
+}
