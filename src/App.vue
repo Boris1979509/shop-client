@@ -1,21 +1,39 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <component v-if="layout" :is="layout + '-layout'" />
+  <teleport to="body">
+    <transition
+      enter-active-class="transition-opacity ease-linear duration-200"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity ease-linear duration-200"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <app-toast v-if="isToast" />
+    </transition>
+  </teleport>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<script>
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import store from "@/store";
+import HomeLayout from "@/components/layouts/HomeLayout.vue";
+import AdminLayout from "@/components/layouts/AdminLayout.vue";
+
+export default {
+  name: "App",
+  setup() {
+    const route = useRoute();
+    const layout = computed(() => route.meta.layout);
+
+    const isToast = computed(() => store.getters["isToast"]);
+
+    return { layout, isToast };
+  },
+  components: {
+    HomeLayout,
+    AdminLayout,
+  },
+};
+</script>
